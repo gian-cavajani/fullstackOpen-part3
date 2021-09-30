@@ -63,13 +63,25 @@ app.delete("/api/persons/:id", (req, res) => {
 
 app.post("/api/persons", (req, res) => {
   const body = req.body;
+  if (!body.name) {
+    return res.status(400).json({ error: "add a name to the post request" });
+  }
+  if (!body.number) {
+    return res.status(400).json({ error: "add a number to the post request" });
+  }
+  if (persons.find((p) => p.name === body.name)) {
+    return res.status(409).json({
+      error: "name duplicated, please change your name hehe",
+    });
+  }
   const person = {
     id: Math.random() * 10000,
     name: body.name,
     number: body.number,
   };
+
   persons = persons.concat(person);
-  console.log(persons);
+
   res.json(person);
 });
 
