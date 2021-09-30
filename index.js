@@ -29,11 +29,22 @@ app.get("/api/persons", (req, res) => {
   res.json(persons);
 });
 
+app.get("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const person = persons.find((p) => p.id === id);
+  if (person) {
+    res.json(person);
+  } else {
+    res.status(404).send("person does not exist");
+  }
+});
+
 app.get("/info", (req, res) => {
   const infoPage = `<div><p>Phonebook has info for ${
     persons.length
   } people</p><p>${new Date()}</div>`;
   res.send(infoPage);
 });
+
 const PORT = 3001;
 app.listen(PORT);
